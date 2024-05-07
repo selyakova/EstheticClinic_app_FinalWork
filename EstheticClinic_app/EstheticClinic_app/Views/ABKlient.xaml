@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EstheticClinic_app.Views.ABKlient"
+             Title="Broneering">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Label Text="Broneering" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+            <Label Text="Name"/>
+            <Entry Text="{Binding Name}"/>
+            <Label Text="Email"/>
+            <Entry Text="{Binding Email}" Keyboard="Email"/>
+            <Label Text="Phone"/>
+            <Entry Text="{Binding Phone}" Keyboard="Telephone"/>
+            <Picker x:Name="servicePicker" Title="Vali teenus" ItemDisplayBinding="{Binding}"/>
+            <Label Text="Vali kuupäev"/>
+            <DatePicker Date="{Binding Date}" Format="D"/>
+            <Label Text="Vali aeg"/>
+            <TimePicker Time="{Binding Time}" Format="T"/>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Salvesta" Clicked="Button_Clicked_Salvesta"/>
+                <Button Text="Kustuta" Clicked="Button_Clicked_Kustuta"/>
+                <Button Text="Loobu" Clicked="Button_Clicked_Loobu"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
