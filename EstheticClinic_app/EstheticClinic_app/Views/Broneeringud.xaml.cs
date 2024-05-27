@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using EstheticClinic_app.Models;
+﻿using System; // Подключение стандартной библиотеки .NET
+using System.Collections.Generic; // Подключение библиотеки для работы с коллекциями
+using System.Linq; // Подключение библиотеки для работы с LINQ
+using Xamarin.Forms; // Подключение библиотеки Xamarin.Forms для разработки кроссплатформенных приложений
+using Xamarin.Forms.Xaml; // Подключение библиотеки для работы с XAML
+using EstheticClinic_app.Models; // Подключение пространства имен с моделями данных
 
 namespace EstheticClinic_app.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Broneeringud : ContentPage
     {
-        ListView listView;
+        ListView listView; // Объявление списка ListView
 
+        // Конструктор страницы
         public Broneeringud()
         {
             InitializeComponent();
-            this.BackgroundColor = Color.FromHex("#E2E8D3");
+            this.BackgroundColor = Color.FromHex("#E2E8D3"); // Установка фона страницы
 
+            // Создание заголовка страницы
             Label titleLabel = new Label
             {
                 Text = "Minu broneeringud",
@@ -25,13 +27,15 @@ namespace EstheticClinic_app.Views
                 FontAttributes = FontAttributes.Bold,
                 Margin = new Thickness(0, 20, 0, 10)
             };
+
+            // Создание ListView для отображения списка бронирований
             listView = new ListView
             {
                 Margin = new Thickness(10, 0, 10, 10),
                 ItemTemplate = new DataTemplate(() =>
                 {
                     var nameLabel = new Label();
-                    nameLabel.SetBinding(Label.TextProperty, new Binding("TeenuseNimetus", stringFormat: "{0} - {1:d}")); 
+                    nameLabel.SetBinding(Label.TextProperty, new Binding("TeenuseNimetus", stringFormat: "{0} - {1:d}"));
                     nameLabel.HorizontalOptions = LayoutOptions.StartAndExpand;
 
                     var deleteButton = new Button { Text = "х", BackgroundColor = Color.LightGray, TextColor = Color.White };
@@ -51,8 +55,10 @@ namespace EstheticClinic_app.Views
 
             listView.ItemTapped += ListView_ItemTapped;
 
+            // Заполнение ListView данными
             PopulateListView();
 
+            // Создание макета страницы
             StackLayout layout = new StackLayout
             {
                 Padding = new Thickness(10),
@@ -62,12 +68,14 @@ namespace EstheticClinic_app.Views
             Content = layout;
         }
 
+        // Метод для заполнения ListView данными из базы данных
         private void PopulateListView()
         {
             var database = new KlientideAndmebaas(App.DatabasePath);
             listView.ItemsSource = database.GetItems().ToList();
         }
 
+        // Обработчик события нажатия кнопки удаления
         private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -81,6 +89,7 @@ namespace EstheticClinic_app.Views
             }
         }
 
+        // Обработчик события выбора элемента в ListView
         private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             var item = e.Item as Klient;
@@ -94,7 +103,7 @@ namespace EstheticClinic_app.Views
                               $"Kellaaeg: {item.DateTime.ToString("t")}";
                 await DisplayAlert("Valitud broneering", message, "OK");
             }
-            ((ListView)sender).SelectedItem = null; 
+            ((ListView)sender).SelectedItem = null; // Сброс выбора элемента
         }
     }
 }

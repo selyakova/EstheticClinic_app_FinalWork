@@ -1,15 +1,17 @@
-﻿using System.Collections.ObjectModel;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using System.Collections.ObjectModel; // Подключение библиотеки для работы с ObservableCollection
+using Xamarin.Forms; // Подключение библиотеки Xamarin.Forms для разработки кроссплатформенных приложений
+using Xamarin.Forms.Xaml; // Подключение библиотеки для работы с XAML
 
 namespace EstheticClinic_app.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)] // Указание на необходимость компиляции XAML
     public partial class Nimekiri : ContentPage
     {
+        // Объявление коллекции для хранения услуг
         ObservableCollection<Teenus> teenuss = new ObservableCollection<Teenus>();
-        ListView listView;
+        ListView listView; // Объявление ListView
 
+        // Объявление заголовка страницы
         Label titleLabel = new Label
         {
             Text = "Esthetic Clinic",
@@ -19,6 +21,7 @@ namespace EstheticClinic_app.Views
             HorizontalOptions = LayoutOptions.CenterAndExpand
         };
 
+        // Конструктор страницы
         public Nimekiri()
         {
             InitializeComponent();
@@ -54,7 +57,7 @@ namespace EstheticClinic_app.Views
                 //new Teenus { Nimetus = "", Kirjeldus = "", Hind = 50, Pilt="" },
                 //new Teenus { Nimetus = "", Kirjeldus = "", Hind = 50, Pilt="" }
             };
-
+            // Описание услуг
             Label descriptionLabel = new Label
             {
                 Text = "Meie Esteetiline erakliinik pakkub palju erinevaid protseduure. Vali ja kohe broneeri aega!",
@@ -65,17 +68,19 @@ namespace EstheticClinic_app.Views
                 FontAttributes = FontAttributes.Italic
             };
 
+            // Создание фрейма для описания
             Frame frame = new Frame
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 Padding = new Thickness(10),
-                BackgroundColor = Color.FromHex("#F2F8E3"), 
+                BackgroundColor = Color.FromHex("#F2F8E3"),
                 HasShadow = true,
                 CornerRadius = 10,
                 Content = descriptionLabel
             };
 
+            // Создание ListView для отображения услуг
             listView = new ListView
             {
                 Header = "Teenused",
@@ -92,8 +97,9 @@ namespace EstheticClinic_app.Views
                 }),
             };
 
-            listView.ItemTapped += List_ItemTapped;
+            listView.ItemTapped += List_ItemTapped; // Обработчик события нажатия на элемент списка
 
+            // Кнопка для бронирования
             Button broneeriButton = new Button
             {
                 Text = "Broneeri aeg!",
@@ -103,11 +109,11 @@ namespace EstheticClinic_app.Views
 
             broneeriButton.Clicked += async (sender, e) =>
             {
-                ABKlient abKlient = new ABKlient(teenuss); 
+                ABKlient abKlient = new ABKlient(teenuss);
                 await Navigation.PushAsync(abKlient);
             };
 
-
+            // Кнопка для перехода к моим бронированиям
             Button myBookingsButton = new Button
             {
                 Text = "Minu broneeringud",
@@ -120,6 +126,7 @@ namespace EstheticClinic_app.Views
                 await Navigation.PushAsync(new Broneeringud());
             };
 
+            // Создание макета страницы
             StackLayout stackLayout = new StackLayout
             {
                 Padding = new Thickness(10),
@@ -129,18 +136,20 @@ namespace EstheticClinic_app.Views
             this.Content = stackLayout;
         }
 
+        // Обработчик события нажатия на элемент списка
         private async void List_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            Teenus selectedTenus = e.Item as Teenus;
-            if (selectedTenus != null)
-                await DisplayAlert("Valitud teenus", $"{selectedTenus.Kirjeldus} - {selectedTenus.Hind} eur", "OK");
+            Teenus selectedTeenus = e.Item as Teenus;
+            if (selectedTeenus != null)
+                await DisplayAlert("Valitud teenus", $"{selectedTeenus.Kirjeldus} - {selectedTeenus.Hind} eur", "OK");
         }
 
+        // Обработчик события нажатия на кнопку
         private async void Button_Clicked(object sender, System.EventArgs e)
         {
             Button btn = (Button)sender;
-            var selectedTeenuss = (Teenus)listView.SelectedItem;
-            if (selectedTeenuss != null)
+            var selectedTeenus = (Teenus)listView.SelectedItem;
+            if (selectedTeenus != null)
             {
                 ABKlient abKlient = new ABKlient(teenuss);
                 await Navigation.PushAsync(abKlient);
